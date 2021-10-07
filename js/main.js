@@ -51,6 +51,15 @@ const ARRAY_LENGTH = 10;
 
 const getRandomArrayElement = (elements) => elements[_.random(0, elements.length - 1)];
 
+const getRandomArrayMiddleElements = (elements) => {
+  const min = _.random(0, Math.floor(elements.length / 2));
+  const max = _.random(Math.ceil(elements.length / 2), elements.length);
+  if (min === max) {
+    return elements.slice(min, max + 1);
+  }
+  return elements.slice(min, max);
+};
+
 const createLocation = () => ({
   lat: getRandomFloat(35.65, 35.7, 5),
   lng: getRandomFloat(139.7, 139.8, 5),
@@ -70,9 +79,9 @@ const createObject = () => ({
     guests: _.random(1, MAX_GUEST),
     checkin: getRandomArrayElement(CHECK),
     checkout: getRandomArrayElement(CHECK),
-    features: FEAUTERS.slice(_.random(0, FEAUTERS.length - 1)),
+    features: getRandomArrayMiddleElements(FEAUTERS),
     description: getRandomArrayElement(DESCRIPTION),
-    photos: PHOTOS.slice(_.random(0, PHOTOS.length - 1)),
+    photos: getRandomArrayMiddleElements(PHOTOS),
   },
 
   location: {
