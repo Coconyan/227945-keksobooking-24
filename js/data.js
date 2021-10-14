@@ -80,4 +80,4 @@ const createObject = () => ({
 });
 
 const similarObjects = Array.from({length: ARRAY_LENGTH}, createObject);
-console.log(similarObjects);
+export {similarObjects};
