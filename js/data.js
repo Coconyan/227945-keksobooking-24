@@ -1,4 +1,5 @@
 import {getRandomFloat} from './utils/get-random-float.js';
+import {getRandomInt} from './utils/get-random-int.js';
 
 const AVATAR = [
   'img/avatars/user01.png',
@@ -37,11 +38,11 @@ const PHOTOS = [
 ];
 const ARRAY_LENGTH = 10;
 
-const getRandomArrayElement = (elements) => elements[_.random(0, elements.length - 1)];
+const getRandomArrayElement = (elements) => elements[getRandomInt(0, elements.length - 1)];
 
 const getRandomArrayMiddleElements = (elements) => {
-  const min = _.random(0, Math.floor(elements.length / 2));
-  const max = _.random(Math.ceil(elements.length / 2), elements.length);
+  const min = getRandomInt(0, Math.floor(elements.length / 2));
+  const max = getRandomInt(Math.ceil(elements.length / 2), elements.length);
   if (min === max) {
     return elements.slice(min, max + 1);
   }
@@ -61,10 +62,10 @@ const createObject = () => ({
   offer: {
     title: getRandomArrayElement(TITLE),
     address: createLocation(),
-    price: _.random(0, MAX_PRICE),
+    price: getRandomInt(0, MAX_PRICE),
     type: getRandomArrayElement(TYPE),
-    rooms: _.random(1, MAX_ROOMS),
-    guests: _.random(1, MAX_GUEST),
+    rooms: getRandomInt(1, MAX_ROOMS),
+    guests: getRandomInt(1, MAX_GUEST),
     checkin: getRandomArrayElement(CHECK),
     checkout: getRandomArrayElement(CHECK),
     features: getRandomArrayMiddleElements(FEAUTERS),
@@ -79,4 +80,4 @@ const createObject = () => ({
 });
 
 const similarObjects = Array.from({length: ARRAY_LENGTH}, createObject);
-similarObjects;
+console.log(similarObjects);
