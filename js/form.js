@@ -2,19 +2,46 @@ const adForm = document.querySelector('.ad-form');
 const mapFilters = document.querySelector('.map__filters');
 
 const formDisable = (form) => {
-  const formClass = form.classList;
-  form.classList.add(`${formClass  }--disabled`);
+  if (form.matches('.ad-form')) {
+    form.classList.add('ad-form--disabled');
+    const adFormFieldsets = adForm.querySelectorAll('fieldset');
+    adFormFieldsets.forEach((fieldset) => {
+      fieldset.disabled = true;
+    });
+  } else if (form.matches('.map__filters')) {
+    form.classList.add('map__filters--disabled');
+    const mapFiltersSelects = mapFilters.querySelectorAll('select');
+    const mapFiltersFielsets = mapFilters.querySelectorAll('fieldset');
+    mapFiltersFielsets.forEach((fieldset) => {
+      fieldset.disabled = true;
+    });
+    mapFiltersSelects.forEach((select) => {
+      select.disabled = true;
+    });
+  }
 };
 
 const formActivate = (form) => {
-  const formClass = form.classList;
-  if (formClass.length > 1) {
-    const className = formClass[1];
-    form.classList.remove(className);
+  if (form.matches('.ad-form')) {
+    form.classList.remove('ad-form--disabled');
+    const adFormFieldsets = adForm.querySelectorAll('fieldset');
+    adFormFieldsets.forEach((fieldset) => {
+      fieldset.disabled = false;
+    });
+  } else if (form.matches('.map__filters')) {
+    form.classList.remove('map__filters--disabled');
+    const mapFiltersSelects = mapFilters.querySelectorAll('select');
+    const mapFiltersFielsets = mapFilters.querySelectorAll('fieldset');
+    mapFiltersFielsets.forEach((fieldset) => {
+      fieldset.disabled = false;
+    });
+    mapFiltersSelects.forEach((select) => {
+      select.disabled = false;
+    });
   }
 };
 
 formDisable(adForm);
 formDisable(mapFilters);
-formActivate(adForm);
 formActivate(mapFilters);
+formActivate(adForm);

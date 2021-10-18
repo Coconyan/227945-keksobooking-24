@@ -7,7 +7,7 @@ const cardTitle = cardTemplate.querySelector('.popup__title');
 cardTitle.textContent = similarObject.offer.title;
 
 const cardAddress = cardTemplate.querySelector('.popup__text--address');
-cardAddress.textContent = `${similarObject.offer.address.lat  }, ${  similarObject.offer.address.lng}`; // переделать data.js, строка должна генерироваться в объекте
+cardAddress.textContent = `${similarObject.offer.address.lat  }, ${  similarObject.offer.address.lng}`;
 
 const cardPrice = cardTemplate.querySelector('.popup__text--price');
 cardPrice.textContent = `${similarObject.offer.price  } ₽/ночь`;
