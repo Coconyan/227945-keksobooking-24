@@ -77,3 +77,30 @@ const roomAndCapacityValidation = (event) => {
 
 roomNumber.addEventListener('change', roomAndCapacityValidation);
 capacity.addEventListener('change', roomAndCapacityValidation);
+
+const typePriceList = {
+  bungalow: 0,
+  flat: 1000,
+  hotel: 3000,
+  house: 5000,
+  palace: 10000,
+};
+const type = document.querySelector('#type');
+const price = document.querySelector('#price');
+
+type.addEventListener('change', () => {
+  const typeValue = type.value;
+  price.min = typePriceList[typeValue];
+  price.placeholder = typePriceList[typeValue];
+});
+
+const timein = document.querySelector('#timein');
+const timeout = document.querySelector('#timeout');
+
+timein.addEventListener('change', () => {
+  timeout.value = timein.value;
+});
+
+timeout.addEventListener('change', () => {
+  timein.value = timeout.value;
+});
