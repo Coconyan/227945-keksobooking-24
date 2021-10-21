@@ -45,3 +45,35 @@ formDisable(adForm);
 formDisable(mapFilters);
 formActivate(mapFilters);
 formActivate(adForm);
+
+const roomNumber = document.querySelector('#room_number');
+const capacity = document.querySelector('#capacity');
+
+const roomNumberCapacityMap = {
+  3: {
+    availableCapacities: ['3', '2', '1'],
+    errorText: '3 комнаты для 3, 2 или 1 гостя',
+  },
+  2: {
+    availableCapacities: ['2', '1'],
+    errorText: '2 комнаты для 2 или 1 гостя',
+  },
+  1: {
+    availableCapacities: ['1'],
+    errorText: '1 комната для 1 гостя',
+  },
+  100: {
+    availableCapacities: ['0'],
+    errorText: '100 комнат не для гостей',
+  },
+};
+
+const roomAndCapacityValidation = (event) => {
+  const {target} = event;
+  const {availableCapacities, errorText} = roomNumberCapacityMap[roomNumber.value];
+  target.setCustomValidity(availableCapacities.includes(`${capacity.value}`) ? '' : errorText);
+  target.reportValidity();
+};
+
+roomNumber.addEventListener('change', roomAndCapacityValidation);
+capacity.addEventListener('change', roomAndCapacityValidation);
