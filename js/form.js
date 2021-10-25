@@ -104,3 +104,5 @@ timein.addEventListener('change', () => {
 timeout.addEventListener('change', () => {
   timein.value = timeout.value;
 });
+
+export {formActivate, formDisable, adForm, mapFilters};
