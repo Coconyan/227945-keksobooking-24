@@ -1,5 +1,5 @@
 
-import { formActivate ,adForm, mapFilters} from './form.js';
+import { formActivate ,adForm, mapFilters } from './form.js';
 import { createAd } from './layout-generator.js';
 import { similarObjects } from './data.js';
 
@@ -21,7 +21,7 @@ L.tileLayer(
 ).addTo(map);
 
 const mainPinIcon = L.icon({
-  iconUrl: '/../img/main-pin.svg',
+  iconUrl: 'img/main-pin.svg',
   iconSize: [52, 52],
   iconAnchor: [26, 52],
 });
@@ -38,12 +38,10 @@ const mainPinMarker = L.marker(
 );
 
 const createSimilarPins = () => {
-  for (let i = 0; i < similarObjects.length; i++) {
-    const similarObject = similarObjects[i];
-    const similarAd = createAd(similarObjects[i]);
-
+  similarObjects.forEach((similarObject) => {
+    const similarAd = createAd(similarObject);
     const similarPinIcon = L.icon({
-      iconUrl: '/../img/pin.svg',
+      iconUrl: 'img/pin.svg',
       iconSize: [40, 40],
       iconAnchor: [20, 40],
     });
@@ -59,7 +57,7 @@ const createSimilarPins = () => {
     );
     similarPinMarker.addTo(map);
     similarPinMarker.bindPopup(similarAd);
-  }
+  });
 };
 
 createSimilarPins();
