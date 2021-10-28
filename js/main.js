@@ -1,4 +1,14 @@
-import './data.js';
-import './layout-generator.js';
-import './form.js';
+import { getData } from './data.js';
+import { showAlert } from './utils/show-alert.js';
 import './map.js';
+import './form.js';
+import { createSimilarPins } from './map.js';
+import { showSuccessMessage } from './messages.js';
+import { setAdFormSubmit,adFormResetButton, formReset } from './form.js';
+
+const loadAds = getData(createSimilarPins, showAlert);
+loadAds();
+
+adFormResetButton.addEventListener('click', formReset);
+
+setAdFormSubmit(showSuccessMessage);

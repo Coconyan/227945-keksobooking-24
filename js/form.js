@@ -1,3 +1,6 @@
+import { sendData } from './data.js';
+import { resetMap } from './map.js';
+import { showErrorMessage } from './messages.js';
 const adForm = document.querySelector('.ad-form');
 const mapFilters = document.querySelector('.map__filters');
 
@@ -40,11 +43,6 @@ const formActivate = (form) => {
     });
   }
 };
-
-formDisable(adForm);
-formDisable(mapFilters);
-formActivate(mapFilters);
-formActivate(adForm);
 
 const roomNumber = document.querySelector('#room_number');
 const capacity = document.querySelector('#capacity');
@@ -105,4 +103,24 @@ timeout.addEventListener('change', () => {
   timein.value = timeout.value;
 });
 
-export {formActivate, formDisable, adForm, mapFilters};
+const setAdFormSubmit = (onSuccess) => {
+  adForm.addEventListener('submit', (event) => {
+    event.preventDefault();
+
+    sendData(
+      () => onSuccess(),
+      () => showErrorMessage(),
+      new FormData(event.target),
+    );
+  });
+};
+
+const formReset = () => {
+  adForm.reset();
+  mapFilters.reset();
+  resetMap();
+};
+
+const adFormResetButton = adForm.querySelector('.ad-form__reset');
+
+export {formActivate, formDisable, adForm, mapFilters, setAdFormSubmit, formReset, adFormResetButton};

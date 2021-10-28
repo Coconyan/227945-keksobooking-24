@@ -1,7 +1,6 @@
 
 import { formActivate ,adForm, mapFilters } from './form.js';
 import { createAd } from './layout-generator.js';
-import { similarObjects } from './data.js';
 
 const map = L.map('map-canvas')
   .on('load', () => {
@@ -37,7 +36,7 @@ const mainPinMarker = L.marker(
   },
 );
 
-const createSimilarPins = () => {
+const createSimilarPins = (similarObjects) => {
   similarObjects.forEach((similarObject) => {
     const similarAd = createAd(similarObject);
     const similarPinIcon = L.icon({
@@ -48,19 +47,18 @@ const createSimilarPins = () => {
 
     const similarPinMarker = L.marker(
       {
-        lat: similarObject.offer.address.lat,
-        lng: similarObject.offer.address.lng,
+        lat: similarObject.location.lat,
+        lng: similarObject.location.lng,
       },
       {
         icon: similarPinIcon,
       },
     );
+
     similarPinMarker.addTo(map);
     similarPinMarker.bindPopup(similarAd);
   });
 };
-
-createSimilarPins();
 
 mainPinMarker.addTo(map);
 
@@ -69,3 +67,23 @@ mainPinMarker.on('moveend', (event) => {
   const coordinates = event.target.getLatLng();
   addressInput.value = `${coordinates.lat.toFixed(5)} ${coordinates.lng.toFixed(5)}`;
 });
+
+const resetMap = () => {
+  map.setView({
+    lat: 35.65,
+    lng: 139.7,
+  }, 12);
+
+  mainPinMarker.setLatLng({
+    lat: 35.65,
+    lng: 139.7,
+  });
+
+  const addressInput = document.querySelector('#address');
+  const coordinatesMainPinMarker = mainPinMarker.getLatLng();
+  addressInput.value = `${coordinatesMainPinMarker.lat.toFixed(5)} ${coordinatesMainPinMarker.lng.toFixed(5)}`;
+
+  map.closePopup();
+};
+
+export {createSimilarPins, map, mainPinMarker, resetMap};

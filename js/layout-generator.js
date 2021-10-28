@@ -5,7 +5,7 @@ const createAd = (similarObject) => {
   cardTitle.textContent = similarObject.offer.title;
 
   const cardAddress = cardTemplate.querySelector('.popup__text--address');
-  cardAddress.textContent = `${similarObject.offer.address.lat  }, ${  similarObject.offer.address.lng}`;
+  cardAddress.textContent = similarObject.offer.address;
 
   const cardPrice = cardTemplate.querySelector('.popup__text--price');
   cardPrice.textContent = `${similarObject.offer.price  } ₽/ночь`;
@@ -35,19 +35,26 @@ const createAd = (similarObject) => {
 
   const cardDescription = cardTemplate.querySelector('.popup__description');
   cardDescription.textContent = similarObject.offer.description;
+  if (cardDescription.textContent === '') {
+    cardDescription.classList.add('hidden');
+  }
 
   const cardPhotosFragment = document.createDocumentFragment();
-  similarObject.offer.photos.forEach((photo) => {
-    const cardPhotoTemplate = cardTemplate.querySelector('.popup__photos').cloneNode(true);
-    const cardPhotoImg = cardPhotoTemplate.querySelector('img');
-    cardPhotoImg.src = photo;
-    cardPhotosFragment.appendChild(cardPhotoImg);
-  });
-  cardTemplate.querySelector('.popup__photos img').remove();
-  const cardPhotos = cardTemplate.querySelector('.popup__photos');
-  cardPhotos.appendChild(cardPhotosFragment);
-  if (cardTemplate.querySelector('.popup__photos img') === null) {
-    cardPhotos.classList.add('hidden');
+  if (similarObject.offer.photos) {
+    similarObject.offer.photos.forEach((photo) => {
+      const cardPhotoTemplate = cardTemplate.querySelector('.popup__photos').cloneNode(true);
+      const cardPhotoImg = cardPhotoTemplate.querySelector('img');
+      cardPhotoImg.src = photo;
+      cardPhotosFragment.appendChild(cardPhotoImg);
+    });
+    cardTemplate.querySelector('.popup__photos img').remove();
+    const cardPhotos = cardTemplate.querySelector('.popup__photos');
+    cardPhotos.appendChild(cardPhotosFragment);
+    if (cardTemplate.querySelector('.popup__photos img') === null) {
+      cardPhotos.classList.add('hidden');
+    }
+  } else {
+    cardTemplate.querySelector('.popup__photos').classList.add('hidden');
   }
 
   const cardAvatar = cardTemplate.querySelector('.popup__avatar');
