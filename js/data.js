@@ -1,5 +1,5 @@
-import {getRandomFloat} from './utils/get-random-float.js';
-import {getRandomInt} from './utils/get-random-int.js';
+import { getRandomFloat } from './utils/get-random-float.js';
+import { getRandomInt } from './utils/get-random-int.js';
 
 const AVATAR = [
   'img/avatars/user01.png',
