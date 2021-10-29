@@ -4,11 +4,9 @@ import './map.js';
 import './form.js';
 import { createSimilarPins } from './map.js';
 import { showSuccessMessage } from './messages.js';
-import { setAdFormSubmit,adFormResetButton, formReset } from './form.js';
+import { setAdFormSubmit } from './form.js';
 
 const loadAds = getData(createSimilarPins, showAlert);
 loadAds();
-
-adFormResetButton.addEventListener('click', formReset);
 
 setAdFormSubmit(showSuccessMessage);

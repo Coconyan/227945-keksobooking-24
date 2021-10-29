@@ -122,5 +122,6 @@ const formReset = () => {
 };
 
 const adFormResetButton = adForm.querySelector('.ad-form__reset');
+adFormResetButton.addEventListener('click', formReset);
 
 export {formActivate, formDisable, adForm, mapFilters, setAdFormSubmit, formReset, adFormResetButton};
