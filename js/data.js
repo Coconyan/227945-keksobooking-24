@@ -1,5 +1,5 @@
 // eslint-disable-next-line arrow-body-style
-const getData = (onSuccess, onError) => () => {
+const getData = (onSuccess, onError) => {
   return fetch('https://24.javascript.pages.academy/keksobooking/data')
     .then((response) => {
       if (response.ok) {

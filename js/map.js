@@ -1,11 +1,10 @@
 
 import { formActivate ,adForm, mapFilters } from './form.js';
 import { createAd } from './layout-generator.js';
+const SIMILAR_PINS_COUNT = 10;
 
 const map = L.map('map-canvas')
   .on('load', () => {
-    formActivate(adForm);
-    formActivate(mapFilters);
   })
   .setView({
     lat: 35.65,
@@ -36,28 +35,101 @@ const mainPinMarker = L.marker(
   },
 );
 
-const createSimilarPins = (similarObjects) => {
-  similarObjects.forEach((similarObject) => {
-    const similarAd = createAd(similarObject);
-    const similarPinIcon = L.icon({
-      iconUrl: 'img/pin.svg',
-      iconSize: [40, 40],
-      iconAnchor: [20, 40],
+const housePriceSelectMap = {
+  any: {
+    min: 0,
+    max: 1000000,
+  },
+  middle: {
+    min: 10000,
+    max: 50000,
+  },
+  low: {
+    min: 0,
+    max: 10000,
+  },
+  high: {
+    min: 50000,
+    max: 1000000,
+  },
+};
+
+const getAdRank = (ad) => {
+  const houseTypeSelect = document.querySelector('[name="housing-type"]');
+  const housePriceSelect = document.querySelector('[name="housing-price"]');
+  const houseRoomsSelect = document.querySelector('[name="housing-rooms"]');
+  const houseGuestsSelect = document.querySelector('[name="housing-guests"]');
+  const houseFeaturesInputs = document.querySelectorAll('[name="features"]');
+
+  let rank = 0;
+
+  if (ad.offer.type === houseTypeSelect.value) {
+    rank += 1;
+  }
+  if (ad.offer.price >= housePriceSelectMap[housePriceSelect.value].min && ad.offer.price <= housePriceSelectMap[housePriceSelect.value].max) {
+    rank += 1;
+  }
+  if (ad.offer.rooms === +houseRoomsSelect.value) {
+    rank += 1;
+  }
+  if (ad.offer.guests === +houseGuestsSelect.value) {
+    rank += 1;
+  }
+  if (ad.offer.features) {
+    ad.offer.features.forEach((feature) => {
+      houseFeaturesInputs.forEach((featureInput) => {
+        if (feature === featureInput.value && featureInput.checked) {
+          rank+= 1;
+        }
+      });
     });
+  }
 
-    const similarPinMarker = L.marker(
-      {
-        lat: similarObject.location.lat,
-        lng: similarObject.location.lng,
-      },
-      {
-        icon: similarPinIcon,
-      },
-    );
+  if (ad.offer.features === houseFeaturesInputs.value) {//gthtltkfnm
+    rank += 1;
+  }
 
-    similarPinMarker.addTo(map);
-    similarPinMarker.bindPopup(similarAd);
-  });
+  return rank;
+};
+
+const compareAds = (adA, adB) => {
+  const rankA = getAdRank(adA);
+  const rankB = getAdRank(adB);
+
+  return rankB - rankA;
+};
+
+const markerGroup = L.layerGroup().addTo(map);
+
+const createSimilarPins = (similarObjects) => {
+  markerGroup.clearLayers();
+  similarObjects
+    .slice()
+    .sort(compareAds)
+    .slice(0, SIMILAR_PINS_COUNT)
+    .forEach((similarObject) => {
+      const similarAd = createAd(similarObject);
+      const similarPinIcon = L.icon({
+        iconUrl: 'img/pin.svg',
+        iconSize: [40, 40],
+        iconAnchor: [20, 40],
+      });
+
+      const similarPinMarker = L.marker(
+        {
+          lat: similarObject.location.lat,
+          lng: similarObject.location.lng,
+        },
+        {
+          icon: similarPinIcon,
+        },
+      );
+
+      similarPinMarker.addTo(markerGroup);
+      similarPinMarker.bindPopup(similarAd);
+    });
+  formActivate(adForm);
+  formActivate(mapFilters);
 };
 
 mainPinMarker.addTo(map);
