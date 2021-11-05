@@ -1,4 +1,3 @@
-
 import { formActivate ,adForm, mapFilters } from './form.js';
 import { createAd } from './layout-generator.js';
 const SIMILAR_PINS_COUNT = 10;
@@ -60,13 +59,14 @@ const getAdRank = (ad) => {
   const houseRoomsSelect = document.querySelector('[name="housing-rooms"]');
   const houseGuestsSelect = document.querySelector('[name="housing-guests"]');
   const houseFeaturesInputs = document.querySelectorAll('[name="features"]');
-
+  const housePriceSelectMin = housePriceSelectMap[housePriceSelect.value].min;
+  const housePriceSelectMax = housePriceSelectMap[housePriceSelect.value].max;
   let rank = 0;
 
   if (ad.offer.type === houseTypeSelect.value) {
     rank += 1;
   }
-  if (ad.offer.price >= housePriceSelectMap[housePriceSelect.value].min && ad.offer.price <= housePriceSelectMap[housePriceSelect.value].max) {
+  if (ad.offer.price >= housePriceSelectMin && ad.offer.price <= housePriceSelectMax) {
     rank += 1;
   }
   if (ad.offer.rooms === +houseRoomsSelect.value) {
@@ -85,26 +85,20 @@ const getAdRank = (ad) => {
     });
   }
 
-  if (ad.offer.features === houseFeaturesInputs.value) {//gthtltkfnm
+  if (ad.offer.features === houseFeaturesInputs.value) {
     rank += 1;
   }
 
   return rank;
 };
 
-const compareAds = (adA, adB) => {
-  const rankA = getAdRank(adA);
-  const rankB = getAdRank(adB);
-
-  return rankB - rankA;
-};
+const compareAds = (adA, adB) => getAdRank(adB) - getAdRank(adA);
 
 const markerGroup = L.layerGroup().addTo(map);
 
 const createSimilarPins = (similarObjects) => {
   markerGroup.clearLayers();
-  similarObjects
-    .slice()
+  [...similarObjects]
     .sort(compareAds)
     .slice(0, SIMILAR_PINS_COUNT)
     .forEach((similarObject) => {

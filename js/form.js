@@ -117,35 +117,9 @@ const housePriceElement = mapFilters.querySelector('[name="housing-price"]');
 const houseRoomsElement = mapFilters.querySelector('[name="housing-rooms"]');
 const houseGuestsElement = mapFilters.querySelector('[name="housing-guests"]');
 const houseFeaturesElement = mapFilters.querySelectorAll('[name="features"]');
-
-const setHouseTypeChange = (cb) => {
-  houseTypeElement.addEventListener('change', () => {
-    cb();
-  });
-};
-
-const setHousePriceChange = (cb) => {
-  housePriceElement.addEventListener('change', () => {
-    cb();
-  });
-};
-
-const setHouseRoomsChange = (cb) => {
-  houseRoomsElement.addEventListener('change', () => {
-    cb();
-  });
-};
-
-const setHouseGuestsChange = (cb) => {
-  houseGuestsElement.addEventListener('change', () => {
-    cb();
-  });
-};
-const setHouseFeaturesChange = (cb) => {
-  houseFeaturesElement.forEach((feature) => {
-    feature.addEventListener('change', () => {
-      cb();
-    });
+const addOnChange = (cb) => {
+  [houseTypeElement, housePriceElement, houseRoomsElement, houseGuestsElement, ...houseFeaturesElement].forEach((element) => {
+    element.addEventListener('change', cb);
   });
 };
 
@@ -170,4 +144,4 @@ const formReset = () => {
 const adFormResetButton = adForm.querySelector('.ad-form__reset');
 adFormResetButton.addEventListener('click', formReset);
 
-export {formActivate, formDisable, adForm, mapFilters, setAdFormSubmit, formReset, adFormResetButton, setHouseTypeChange, setHousePriceChange, setHouseRoomsChange, setHouseGuestsChange, setHouseFeaturesChange};
+export {formActivate, formDisable, adForm, mapFilters, setAdFormSubmit, formReset, adFormResetButton, addOnChange};
