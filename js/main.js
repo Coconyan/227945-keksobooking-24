@@ -4,9 +4,12 @@ import './map.js';
 import './form.js';
 import { createSimilarPins } from './map.js';
 import { showSuccessMessage } from './messages.js';
-import { setAdFormSubmit } from './form.js';
+import { setAdFormSubmit, addOnChange } from './form.js';
+import { debounce } from './utils/debounce.js';
 
-const loadAds = getData(createSimilarPins, showAlert);
-loadAds();
+getData((data) => {
+  createSimilarPins(data);
+  addOnChange(debounce(() => createSimilarPins(data)));
+}, showAlert);
 
 setAdFormSubmit(showSuccessMessage);

@@ -1,6 +1,6 @@
-// eslint-disable-next-line arrow-body-style
-const getData = (onSuccess, onError) => () => {
-  return fetch('https://24.javascript.pages.academy/keksobooking/data')
+
+const getData = (onSuccess, onError) =>
+  fetch('https://24.javascript.pages.academy/keksobooking/data')
     .then((response) => {
       if (response.ok) {
         return response.json();
@@ -14,15 +14,15 @@ const getData = (onSuccess, onError) => () => {
     .catch((err) => {
       onError(err);
     });
-};
 
 const sendData = (onSuccess, onFail, body) => {
   fetch(
     'https://24.javascript.pages.academy/keksobooking',
     {
       method: 'POST',
+      // mode: 'no-cors',
       // headers: {
-      //   'Content-type': 'multipart/form-data',
+      //   'Content-Type': 'multipart/form-data',
       // },
       body,
     },

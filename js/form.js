@@ -44,6 +44,9 @@ const formActivate = (form) => {
   }
 };
 
+formDisable(adForm);
+formDisable(mapFilters);
+
 const roomNumber = document.querySelector('#room_number');
 const capacity = document.querySelector('#capacity');
 
@@ -69,8 +72,14 @@ const roomNumberCapacityMap = {
 const roomAndCapacityValidation = (event) => {
   const {target} = event;
   const {availableCapacities, errorText} = roomNumberCapacityMap[roomNumber.value];
-  target.setCustomValidity(availableCapacities.includes(`${capacity.value}`) ? '' : errorText);
-  target.reportValidity();
+  if (availableCapacities.includes(`${capacity.value}`)) {
+    roomNumber.setCustomValidity('');
+    capacity.setCustomValidity('');
+  } else {
+    target.setCustomValidity(errorText);
+  }
+  roomNumber.reportValidity();
+  capacity.reportValidity();
 };
 
 roomNumber.addEventListener('change', roomAndCapacityValidation);
@@ -103,6 +112,17 @@ timeout.addEventListener('change', () => {
   timein.value = timeout.value;
 });
 
+const houseTypeElement = mapFilters.querySelector('[name="housing-type"]');
+const housePriceElement = mapFilters.querySelector('[name="housing-price"]');
+const houseRoomsElement = mapFilters.querySelector('[name="housing-rooms"]');
+const houseGuestsElement = mapFilters.querySelector('[name="housing-guests"]');
+const houseFeaturesElement = mapFilters.querySelectorAll('[name="features"]');
+const addOnChange = (cb) => {
+  [houseTypeElement, housePriceElement, houseRoomsElement, houseGuestsElement, ...houseFeaturesElement].forEach((element) => {
+    element.addEventListener('change', cb);
+  });
+};
+
 const setAdFormSubmit = (onSuccess) => {
   adForm.addEventListener('submit', (event) => {
     event.preventDefault();
@@ -124,4 +144,4 @@ const formReset = () => {
 const adFormResetButton = adForm.querySelector('.ad-form__reset');
 adFormResetButton.addEventListener('click', formReset);
 
-export {formActivate, formDisable, adForm, mapFilters, setAdFormSubmit, formReset, adFormResetButton};
+export {formActivate, formDisable, adForm, mapFilters, setAdFormSubmit, formReset, adFormResetButton, addOnChange};
