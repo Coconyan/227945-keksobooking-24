@@ -134,6 +134,14 @@ mainPinMarker.on('moveend', (event) => {
   addressInput.value = `${coordinates.lat.toFixed(5)} ${coordinates.lng.toFixed(5)}`;
 });
 
+const resetCoordinateInput = () => {
+  const addressInput = document.querySelector('#address');
+  const coordinatesMainPinMarker = mainPinMarker.getLatLng();
+  addressInput.value = `${coordinatesMainPinMarker.lat.toFixed(5)} ${coordinatesMainPinMarker.lng.toFixed(5)}`;
+};
+
+resetCoordinateInput();
+
 const resetMap = () => {
   map.setView({
     lat: 35.65,
@@ -145,9 +153,7 @@ const resetMap = () => {
     lng: 139.7,
   });
 
-  const addressInput = document.querySelector('#address');
-  const coordinatesMainPinMarker = mainPinMarker.getLatLng();
-  addressInput.value = `${coordinatesMainPinMarker.lat.toFixed(5)} ${coordinatesMainPinMarker.lng.toFixed(5)}`;
+  resetCoordinateInput();
 
   map.closePopup();
 };
