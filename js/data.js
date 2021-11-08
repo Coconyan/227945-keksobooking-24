@@ -20,10 +20,6 @@ const sendData = (onSuccess, onFail, body) => {
     'https://24.javascript.pages.academy/keksobooking',
     {
       method: 'POST',
-      // mode: 'no-cors',
-      // headers: {
-      //   'Content-Type': 'multipart/form-data',
-      // },
       body,
     },
   )

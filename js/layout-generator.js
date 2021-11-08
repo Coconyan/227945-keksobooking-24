@@ -27,10 +27,33 @@ const createAd = (similarObject) => {
   const cardTime = cardTemplate.querySelector('.popup__text--time');
   cardTime.textContent = `Заезд после ${  similarObject.offer.checkin  }, выезд до ${  similarObject.offer.checkout}`;
 
-  const cardFeatures = cardTemplate.querySelector('.popup__features');
-  cardFeatures.textContent = similarObject.offer.features;
-  if (cardFeatures.textContent === '') {
-    cardFeatures.classList.add('hidden');
+  const cardFeaturesMap = {
+    wifi: 'popup__feature--wifi',
+    dishwasher: 'popup__feature--dishwasher',
+    parking: 'popup__feature--parking',
+    washer: 'popup__feature--washer',
+    elevator: 'popup__feature--elevator',
+    conditioner: 'popup__feature--conditioner',
+  };
+  const cardFeaturesList = cardTemplate.querySelector('.popup__features');
+  const cardFeaturesItems = cardFeaturesList.querySelectorAll('.popup__feature');
+  const similarObjectFeaturesArray = similarObject.offer.features;
+  const cardFeaturesFragment = document.createDocumentFragment();
+  if (similarObjectFeaturesArray) {
+    similarObjectFeaturesArray.forEach((feature) => {
+      cardFeaturesItems.forEach((element) => {
+        if (element.classList.contains(cardFeaturesMap[feature])) {
+          cardFeaturesFragment.appendChild(element);
+        }
+      });
+    });
+  }
+  cardFeaturesList.textContent = '';
+  cardFeaturesList.appendChild(cardFeaturesFragment);
+
+
+  if (cardFeaturesList.children.length === 0) {
+    cardFeaturesList.classList.add('hidden');
   }
 
   const cardDescription = cardTemplate.querySelector('.popup__description');
