@@ -1,6 +1,7 @@
 import { sendData } from './data.js';
 import { resetMap } from './map.js';
 import { showErrorMessage } from './messages.js';
+import { previewAvatar, previewImagesImg } from './photos-preview.js';
 const adForm = document.querySelector('.ad-form');
 const mapFilters = document.querySelector('.map__filters');
 
@@ -69,7 +70,7 @@ const roomNumberCapacityMap = {
   },
 };
 
-const roomAndCapacityValidation = (event) => {
+const setRoomAndCapacityValidationHandler = (event) => {
   const {target} = event;
   const {availableCapacities, errorText} = roomNumberCapacityMap[roomNumber.value];
   if (availableCapacities.includes(`${capacity.value}`)) {
@@ -82,8 +83,8 @@ const roomAndCapacityValidation = (event) => {
   capacity.reportValidity();
 };
 
-roomNumber.addEventListener('change', roomAndCapacityValidation);
-capacity.addEventListener('change', roomAndCapacityValidation);
+roomNumber.addEventListener('change', setRoomAndCapacityValidationHandler);
+capacity.addEventListener('change', setRoomAndCapacityValidationHandler);
 
 const typePriceList = {
   bungalow: 0,
@@ -135,13 +136,20 @@ const setAdFormSubmit = (onSuccess) => {
   });
 };
 
-const formReset = () => {
+const formResetHandler = () => {
   adForm.reset();
   mapFilters.reset();
   resetMap();
+  previewAvatar.src = 'img/muffin-grey.svg';
+  previewImagesImg.src = 'img/muffin-grey.svg';
+  price.min = 1000;
+  price.placeholder = 1000;
 };
 
 const adFormResetButton = adForm.querySelector('.ad-form__reset');
-adFormResetButton.addEventListener('click', formReset);
+adFormResetButton.addEventListener('click', (event) => {
+  event.preventDefault();
+  formResetHandler();
+});
 
-export {formActivate, formDisable, adForm, mapFilters, setAdFormSubmit, formReset, adFormResetButton, addOnChange};
+export {formActivate, formDisable, adForm, mapFilters, setAdFormSubmit, formResetHandler, adFormResetButton, addOnChange};

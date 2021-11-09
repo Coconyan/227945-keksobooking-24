@@ -1,4 +1,4 @@
-import { formReset } from './form.js';
+import { formResetHandler } from './form.js';
 const isEscapeKey = (event) => event.key === 'Escape';
 
 const successTemplate = document.querySelector('#success').content.querySelector('.success').cloneNode(true);
@@ -13,38 +13,38 @@ document.body.appendChild(errorTemplate);
 const onEscKeydown = (event) => {
   if (isEscapeKey(event)) {
     event.preventDefault();
-    closeSuccessMessage();
-    closeErrorMessage();
+    closeSuccessMessageHandler();
+    closeErrorMessageHandler();
   }
 };
 
-function showSuccessMessage () {
-  formReset();
+const showSuccessMessage = () => {
+  formResetHandler();
   successTemplate.classList.remove('hidden');
   document.addEventListener('keydown', onEscKeydown);
-  document.addEventListener('click', closeSuccessMessage);
-}
+  document.addEventListener('click', closeSuccessMessageHandler);
+};
 
-function closeSuccessMessage () {
+function closeSuccessMessageHandler () {
   successTemplate.classList.add('hidden');
   document.removeEventListener('keydown', onEscKeydown);
-  document.removeEventListener('click', closeSuccessMessage);
+  document.removeEventListener('click', closeSuccessMessageHandler);
 }
 
-function showErrorMessage () {
+const showErrorMessage = () => {
   errorTemplate.classList.remove('hidden');
   document.addEventListener('keydown', onEscKeydown);
-  document.addEventListener('click', closeErrorMessage);
-}
+  document.addEventListener('click', closeErrorMessageHandler);
+};
 
-function closeErrorMessage () {
+function closeErrorMessageHandler () {
   errorTemplate.classList.add('hidden');
   document.removeEventListener('keydown', onEscKeydown);
-  document.removeEventListener('click', closeErrorMessage);
+  document.removeEventListener('click', closeErrorMessageHandler);
 }
 
 errorCloseButton.addEventListener('click', () => {
-  closeErrorMessage();
+  closeErrorMessageHandler();
 });
 
 export {showSuccessMessage, showErrorMessage};

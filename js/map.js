@@ -118,7 +118,6 @@ const createSimilarPins = (similarObjects) => {
           icon: similarPinIcon,
         },
       );
-
       similarPinMarker.addTo(markerGroup);
       similarPinMarker.bindPopup(similarAd);
     });
