@@ -1,6 +1,8 @@
-import { formActivate ,adForm, mapFilters } from './form.js';
+import { formActivate } from './form.js';
 import { createAd } from './layout-generator.js';
+import { adForm, mapFilters, houseTypeSelect, housePriceSelect, houseRoomsSelect, houseGuestsSelect, houseFeaturesInputs } from './form-elements.js';
 const SIMILAR_PINS_COUNT = 10;
+const addressInput = document.querySelector('#address');
 
 const map = L.map('map-canvas')
   .on('load', () => {
@@ -54,11 +56,6 @@ const housePriceSelectMap = {
 };
 
 const getAdRank = (ad) => {
-  const houseTypeSelect = document.querySelector('[name="housing-type"]');
-  const housePriceSelect = document.querySelector('[name="housing-price"]');
-  const houseRoomsSelect = document.querySelector('[name="housing-rooms"]');
-  const houseGuestsSelect = document.querySelector('[name="housing-guests"]');
-  const houseFeaturesInputs = document.querySelectorAll('[name="features"]');
   const housePriceSelectMin = housePriceSelectMap[housePriceSelect.value].min;
   const housePriceSelectMax = housePriceSelectMap[housePriceSelect.value].max;
   const isNotAnyHousePriceSelect = housePriceSelect.value !== 'any';
@@ -136,13 +133,11 @@ const createSimilarPins = (similarObjects) => {
 mainPinMarker.addTo(map);
 
 mainPinMarker.on('moveend', (event) => {
-  const addressInput = document.querySelector('#address');
   const coordinates = event.target.getLatLng();
   addressInput.value = `${coordinates.lat.toFixed(5)} ${coordinates.lng.toFixed(5)}`;
 });
 
 const resetCoordinateInput = () => {
-  const addressInput = document.querySelector('#address');
   const coordinatesMainPinMarker = mainPinMarker.getLatLng();
   addressInput.value = `${coordinatesMainPinMarker.lat.toFixed(5)} ${coordinatesMainPinMarker.lng.toFixed(5)}`;
 };

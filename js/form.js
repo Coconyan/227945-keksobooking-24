@@ -2,20 +2,20 @@ import { sendData } from './data.js';
 import { resetMap } from './map.js';
 import { showErrorMessage } from './messages.js';
 import { previewAvatar, previewImagesImg } from './photos-preview.js';
-const adForm = document.querySelector('.ad-form');
-const mapFilters = document.querySelector('.map__filters');
+import { adForm, mapFilters, houseTypeSelect, housePriceSelect, houseRoomsSelect, houseGuestsSelect, houseFeaturesInputs } from './form-elements.js';
+
+const adFormFieldsets = adForm.querySelectorAll('fieldset');
+const mapFiltersSelects = mapFilters.querySelectorAll('select');
+const mapFiltersFielsets = mapFilters.querySelectorAll('fieldset');
 
 const formDisable = (form) => {
   if (form.matches('.ad-form')) {
     form.classList.add('ad-form--disabled');
-    const adFormFieldsets = adForm.querySelectorAll('fieldset');
     adFormFieldsets.forEach((fieldset) => {
       fieldset.disabled = true;
     });
   } else if (form.matches('.map__filters')) {
     form.classList.add('map__filters--disabled');
-    const mapFiltersSelects = mapFilters.querySelectorAll('select');
-    const mapFiltersFielsets = mapFilters.querySelectorAll('fieldset');
     mapFiltersFielsets.forEach((fieldset) => {
       fieldset.disabled = true;
     });
@@ -28,14 +28,11 @@ const formDisable = (form) => {
 const formActivate = (form) => {
   if (form.matches('.ad-form')) {
     form.classList.remove('ad-form--disabled');
-    const adFormFieldsets = adForm.querySelectorAll('fieldset');
     adFormFieldsets.forEach((fieldset) => {
       fieldset.disabled = false;
     });
   } else if (form.matches('.map__filters')) {
     form.classList.remove('map__filters--disabled');
-    const mapFiltersSelects = mapFilters.querySelectorAll('select');
-    const mapFiltersFielsets = mapFilters.querySelectorAll('fieldset');
     mapFiltersFielsets.forEach((fieldset) => {
       fieldset.disabled = false;
     });
@@ -113,13 +110,8 @@ timeout.addEventListener('change', () => {
   timein.value = timeout.value;
 });
 
-const houseTypeElement = mapFilters.querySelector('[name="housing-type"]');
-const housePriceElement = mapFilters.querySelector('[name="housing-price"]');
-const houseRoomsElement = mapFilters.querySelector('[name="housing-rooms"]');
-const houseGuestsElement = mapFilters.querySelector('[name="housing-guests"]');
-const houseFeaturesElement = mapFilters.querySelectorAll('[name="features"]');
 const addOnChange = (cb) => {
-  [houseTypeElement, housePriceElement, houseRoomsElement, houseGuestsElement, ...houseFeaturesElement].forEach((element) => {
+  [houseTypeSelect, housePriceSelect, houseRoomsSelect, houseGuestsSelect,  ...houseFeaturesInputs].forEach((element) => {
     element.addEventListener('change', cb);
   });
 };

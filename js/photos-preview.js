@@ -1,9 +1,10 @@
+import { adForm } from './form-elements.js';
 const FILES_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
 
-const fileChooserAvatar = document.querySelector('#avatar');
-const previewAvatar = document.querySelector('.ad-form-header__preview img');
-const fileChooserImages = document.querySelector('#images');
-const previewImages = document.querySelector('.ad-form__photo');
+const fileChooserAvatar = adForm.querySelector('#avatar');
+const previewAvatar = adForm.querySelector('.ad-form-header__preview img');
+const fileChooserImages = adForm.querySelector('#images');
+const previewImages = adForm.querySelector('.ad-form__photo');
 const previewImagesImg = previewAvatar.cloneNode(true);
 previewImagesImg.alt = 'Фотография жилья';
 previewImages.style = 'display: flex; align-items: center; justify-content: center;';
