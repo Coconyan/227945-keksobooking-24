@@ -61,12 +61,23 @@ const getAdRank = (ad) => {
   const houseFeaturesInputs = document.querySelectorAll('[name="features"]');
   const housePriceSelectMin = housePriceSelectMap[housePriceSelect.value].min;
   const housePriceSelectMax = housePriceSelectMap[housePriceSelect.value].max;
+  const isNotAnyHousePriceSelect = housePriceSelect.value !== 'any';
   let rank = 0;
+  let filtersCount = 0;
+  filtersCount += houseTypeSelect.value !== 'any';
+  filtersCount += isNotAnyHousePriceSelect;
+  filtersCount += houseRoomsSelect.value !== 'any';
+  filtersCount += houseGuestsSelect.value !== 'any';
+  houseFeaturesInputs.forEach((featureInput) => {
+    if (featureInput.checked) {
+      filtersCount += 1;
+    }
+  });
 
   if (ad.offer.type === houseTypeSelect.value) {
     rank += 1;
   }
-  if (ad.offer.price >= housePriceSelectMin && ad.offer.price <= housePriceSelectMax) {
+  if (ad.offer.price >= housePriceSelectMin && ad.offer.price <= housePriceSelectMax && isNotAnyHousePriceSelect) {
     rank += 1;
   }
   if (ad.offer.rooms === +houseRoomsSelect.value) {
@@ -79,27 +90,24 @@ const getAdRank = (ad) => {
     ad.offer.features.forEach((feature) => {
       houseFeaturesInputs.forEach((featureInput) => {
         if (feature === featureInput.value && featureInput.checked) {
-          rank+= 1;
+          rank += 1;
         }
       });
     });
   }
 
-  if (ad.offer.features === houseFeaturesInputs.value) {
-    rank += 1;
+  if (filtersCount === rank) {
+    return true;
   }
-
-  return rank;
+  return false;
 };
-
-const compareAds = (adA, adB) => getAdRank(adB) - getAdRank(adA);
 
 const markerGroup = L.layerGroup().addTo(map);
 
 const createSimilarPins = (similarObjects) => {
   markerGroup.clearLayers();
   [...similarObjects]
-    .sort(compareAds)
+    .filter(getAdRank)
     .slice(0, SIMILAR_PINS_COUNT)
     .forEach((similarObject) => {
       const similarAd = createAd(similarObject);
