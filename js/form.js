@@ -1,12 +1,17 @@
 import { sendData } from './data.js';
-import { resetMap } from './map.js';
+import { resetMap, createSimilarPins } from './map.js';
 import { showErrorMessage } from './messages.js';
 import { previewAvatar, previewImagesImg } from './photos-preview.js';
 import { adForm, mapFilters, houseTypeSelect, housePriceSelect, houseRoomsSelect, houseGuestsSelect, houseFeaturesInputs } from './form-elements.js';
+const IMG_PREVIEW_SRC = 'img/muffin-grey.svg';
 
 const adFormFieldsets = adForm.querySelectorAll('fieldset');
 const mapFiltersSelects = mapFilters.querySelectorAll('select');
 const mapFiltersFielsets = mapFilters.querySelectorAll('fieldset');
+const roomNumber = document.querySelector('#room_number');
+const capacity = document.querySelector('#capacity');
+const price = document.querySelector('#price');
+const adFormResetButton = adForm.querySelector('.ad-form__reset');
 
 const formDisable = (form) => {
   if (form.matches('.ad-form')) {
@@ -44,9 +49,6 @@ const formActivate = (form) => {
 
 formDisable(adForm);
 formDisable(mapFilters);
-
-const roomNumber = document.querySelector('#room_number');
-const capacity = document.querySelector('#capacity');
 
 const roomNumberCapacityMap = {
   3: {
@@ -90,11 +92,9 @@ const typePriceList = {
   house: 5000,
   palace: 10000,
 };
-const type = document.querySelector('#type');
-const price = document.querySelector('#price');
 
-type.addEventListener('change', () => {
-  const typeValue = type.value;
+document.querySelector('#type').addEventListener('change', (event) => {
+  const typeValue = event.target.value;
   price.min = typePriceList[typeValue];
   price.placeholder = typePriceList[typeValue];
 });
@@ -116,32 +116,34 @@ const addOnChange = (cb) => {
   });
 };
 
-const setAdFormSubmit = (onSuccess) => {
+const setAdFormSubmit = (onSuccess, data) => {
   adForm.addEventListener('submit', (event) => {
     event.preventDefault();
 
     sendData(
-      () => onSuccess(),
+      () => onSuccess(data),
       () => showErrorMessage(),
       new FormData(event.target),
     );
   });
 };
 
-const formResetHandler = () => {
+const formResetHandler = (data) => {
   adForm.reset();
   mapFilters.reset();
   resetMap();
-  previewAvatar.src = 'img/muffin-grey.svg';
-  previewImagesImg.src = 'img/muffin-grey.svg';
-  price.min = 1000;
-  price.placeholder = 1000;
+  createSimilarPins(data);
+  previewAvatar.src = IMG_PREVIEW_SRC;
+  previewImagesImg.src = IMG_PREVIEW_SRC;
+  price.min = typePriceList.flat;
+  price.placeholder = typePriceList.flat;
 };
 
-const adFormResetButton = adForm.querySelector('.ad-form__reset');
-adFormResetButton.addEventListener('click', (event) => {
-  event.preventDefault();
-  formResetHandler();
-});
+const setFormResetButton = (data) => {
+  adFormResetButton.addEventListener('click', (event) => {
+    event.preventDefault();
+    formResetHandler(data);
+  });
+};
 
-export {formActivate, formDisable, adForm, mapFilters, setAdFormSubmit, formResetHandler, adFormResetButton, addOnChange};
+export {formActivate, formDisable, setAdFormSubmit, formResetHandler, addOnChange, setFormResetButton};

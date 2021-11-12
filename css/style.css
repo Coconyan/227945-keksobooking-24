@@ -1028,3 +1028,9 @@ fieldset {
 .hidden {
   display: none;
 }
+
+.ad-form__photo-preview {
+  display: flex; 
+  align-items: center; 
+  justify-content: center;
+}

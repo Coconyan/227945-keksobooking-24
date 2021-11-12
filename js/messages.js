@@ -18,8 +18,8 @@ const onEscKeydown = (event) => {
   }
 };
 
-const showSuccessMessage = () => {
-  formResetHandler();
+const showSuccessMessage = (data) => {
+  formResetHandler(data);
   successTemplate.classList.remove('hidden');
   document.addEventListener('keydown', onEscKeydown);
   document.addEventListener('click', closeSuccessMessageHandler);

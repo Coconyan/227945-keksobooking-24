@@ -1,6 +1,7 @@
 import { formActivate } from './form.js';
 import { createAd } from './layout-generator.js';
 import { adForm, mapFilters, houseTypeSelect, housePriceSelect, houseRoomsSelect, houseGuestsSelect, houseFeaturesInputs } from './form-elements.js';
+//import { getData } from './data.js';
 const SIMILAR_PINS_COUNT = 10;
 const addressInput = document.querySelector('#address');
 
@@ -58,45 +59,32 @@ const housePriceSelectMap = {
 const getAdRank = (ad) => {
   const housePriceSelectMin = housePriceSelectMap[housePriceSelect.value].min;
   const housePriceSelectMax = housePriceSelectMap[housePriceSelect.value].max;
-  const isNotAnyHousePriceSelect = housePriceSelect.value !== 'any';
-  let rank = 0;
-  let filtersCount = 0;
-  filtersCount += houseTypeSelect.value !== 'any';
-  filtersCount += isNotAnyHousePriceSelect;
-  filtersCount += houseRoomsSelect.value !== 'any';
-  filtersCount += houseGuestsSelect.value !== 'any';
-  houseFeaturesInputs.forEach((featureInput) => {
-    if (featureInput.checked) {
-      filtersCount += 1;
+  const isHousePriceSelected = housePriceSelect.value !== 'any';
+  const isHouseTypeSelected = houseTypeSelect.value !== 'any';
+  const isRoomsSelected = houseRoomsSelect.value !== 'any';
+  const isGuestsSelected = houseGuestsSelect.value !== 'any';
+
+  if (isHouseTypeSelected && ad.offer.type !== houseTypeSelect.value) {
+    return false;
+  }
+  if (isHousePriceSelected && (ad.offer.price < housePriceSelectMin || ad.offer.price > housePriceSelectMax)) {
+    return false;
+  }
+  if (isRoomsSelected && ad.offer.rooms !== +houseRoomsSelect.value) {
+    return false;
+  }
+  if (isGuestsSelected && ad.offer.guests !== +houseGuestsSelect.value) {
+    return false;
+  }
+
+  if (Array.from(houseFeaturesInputs).some((input) => input.checked)) {
+    for (const featureInput of houseFeaturesInputs) {
+      if (featureInput.checked && (!ad.offer.features || !ad.offer.features.includes(featureInput.value))) {
+        return false;
+      }
     }
-  });
-
-  if (ad.offer.type === houseTypeSelect.value) {
-    rank += 1;
   }
-  if (ad.offer.price >= housePriceSelectMin && ad.offer.price <= housePriceSelectMax && isNotAnyHousePriceSelect) {
-    rank += 1;
-  }
-  if (ad.offer.rooms === +houseRoomsSelect.value) {
-    rank += 1;
-  }
-  if (ad.offer.guests === +houseGuestsSelect.value) {
-    rank += 1;
-  }
-  if (ad.offer.features) {
-    ad.offer.features.forEach((feature) => {
-      houseFeaturesInputs.forEach((featureInput) => {
-        if (feature === featureInput.value && featureInput.checked) {
-          rank += 1;
-        }
-      });
-    });
-  }
-
-  if (filtersCount === rank) {
-    return true;
-  }
-  return false;
+  return true;
 };
 
 const markerGroup = L.layerGroup().addTo(map);
@@ -156,7 +144,6 @@ const resetMap = () => {
   });
 
   resetCoordinateInput();
-
   map.closePopup();
 };
 
