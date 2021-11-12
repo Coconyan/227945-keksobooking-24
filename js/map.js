@@ -1,7 +1,6 @@
 import { formActivate } from './form.js';
 import { createAd } from './layout-generator.js';
 import { adForm, mapFilters, houseTypeSelect, housePriceSelect, houseRoomsSelect, houseGuestsSelect, houseFeaturesInputs } from './form-elements.js';
-//import { getData } from './data.js';
 const SIMILAR_PINS_COUNT = 10;
 const addressInput = document.querySelector('#address');
 
